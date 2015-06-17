@@ -1,0 +1,39 @@
+package Kopfgeld;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+public class cmdall implements CommandExecutor {
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
+		
+		if(cmd.getName().equalsIgnoreCase("sudoall")) {
+			if(sender.hasPermission("tray.sudoall")) {
+				if(args.length == 0) {
+					sender.sendMessage(Main.Main.p + "§6/sudoall Befehl");
+				}
+				if(args.length == 1) {
+				for(Player p :Bukkit.getOnlinePlayers()) {
+					p.performCommand("/" + args[0]);
+					sender.sendMessage(Main.Main.p + "§eAlle Spieler führen nun den Befehl §6/" + args[0] + " §eaus.");
+					
+					
+				} }
+				
+			} else { sender.sendMessage(Main.Main.kr) }
+		}
+		
+		
+		
+		
+		
+		return false;
+	}
+	
+	
+
+}
