@@ -1,0 +1,70 @@
+package Kopfgeld;
+
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+
+public class OwnerOnly implements CommandExecutor {
+
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String arg,
+			String[] args) {
+		
+		if(cmd.getName().equalsIgnoreCase("op")) {
+			if(sender.hasPermission("tray.op")) {
+				if(args.length == 0) {
+					sender.sendMessage(Main.Main.p + "§6/op Spieler");
+				}
+				
+				if(args.length == 1) {
+					Player t = Bukkit.getPlayerExact(args[0]);
+					t.setOp(true);
+					sender.sendMessage(Main.Main.p + "§eDer Spieler §6" + args[0] + " §ehat nun OP Rechte.");
+					t.sendMessage(Main.Main.p + "§eDu hast nun OP Rechte.");
+					
+					if(t == null) {
+						OfflinePlayer o = Bukkit.getOfflinePlayer(args[0]);
+						o.setOp(true);
+						sender.sendMessage(Main.Main.p + "§eDer Spieler §6" + args[0] + " §ehat nun OP Rechte.");
+					
+					}
+				
+				}
+			} else { sender.sendMessage(Main.Main.p + "§cDafür hast du keine Rechte!"); }
+		} 
+		
+		
+		if(cmd.getName().equalsIgnoreCase("deop")) {
+			if(sender.hasPermission("tray.op")) {
+				if(args.length == 0) {
+					sender.sendMessage(Main.Main.p + "§6/deop Spieler");
+				}
+				
+				if(args.length == 1) {
+					Player t = Bukkit.getPlayerExact(args[0]);
+					t.setOp(false);
+					sender.sendMessage(Main.Main.p + "§cDer Spieler §6" + args[0] + " §chat nun keine OP Rechte mehr.");
+					t.sendMessage(Main.Main.p + "§cDu hast nun keine OP Rechte mehr.");
+					
+					if(t == null) {
+						OfflinePlayer o = Bukkit.getOfflinePlayer(args[0]);
+						o.setOp(true);
+						sender.sendMessage(Main.Main.p + "§cDer Spieler §6" + args[0] + " §chat nun keine OP Rechte mehr.");
+					}
+				
+				}
+			} else { sender.sendMessage(Main.Main.kr); }
+		}
+		
+		
+		return false;
+	}
+
+}
