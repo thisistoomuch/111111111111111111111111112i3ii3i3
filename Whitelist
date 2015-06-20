@@ -1,0 +1,18 @@
+package Commands3;
+
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerPreLoginEvent.Result;
+
+public class Whitelist implements Listener {
+	
+	@EventHandler
+	public void Whitelist(PlayerPreLoginEvent e) {
+		if(e.getResult().equals(Result.KICK_WHITELIST)) {
+			e.setKickMessage("§8[§6§lTrayPvP§8] \n\n §c§oWir sind im Wartungsmodus. \n§c§oFragen? Wende dich in Skype an §6§omc.account1");		
+		}
+		
+	}
+ 
+}
