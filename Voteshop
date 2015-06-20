@@ -1,0 +1,250 @@
+package Commands3;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+
+public class VoteShop implements Listener, CommandExecutor {
+	
+	@EventHandler
+	public void onInteract(PlayerInteractEvent e) {
+		if(e.getClickedBlock().getType() == Material.NOTE_BLOCK) {
+			Player p = e.getPlayer();
+			Inventory vote = Bukkit.createInventory(null, 27, "§6§lTray§e§lVoteshop");
+			
+			List spawner = new ArrayList();
+			spawner.add("§e§oBenötigt §6§o5 §e§oVotepunkte.");
+			ItemStack Spawner = new ItemStack(Material.MOB_SPAWNER);
+			ItemMeta SpawnerMeta = Spawner.getItemMeta();
+			SpawnerMeta.setDisplayName("§6§l1x §e§lMobspawner");
+			SpawnerMeta.setLore(spawner);
+			
+			List bedrock = new ArrayList();
+			bedrock.add("§e§oBenötigt §6§o2 §e§oVotepunkte.");			
+			ItemStack Bedrock = new ItemStack(Material.BEDROCK);
+			ItemMeta BedrockMeta = Bedrock.getItemMeta();			
+			BedrockMeta.setDisplayName("§6§l16x §e§lGrundgestein");
+			BedrockMeta.setLore(bedrock);		
+			
+			List diamant = new ArrayList();
+			diamant.add("§e§oBenötigt §6§o1 §e§oVotepunkt.");			
+			ItemStack Diamant = new ItemStack(Material.DIAMOND);
+			ItemMeta DiamantMeta = Diamant.getItemMeta();			
+			DiamantMeta.setDisplayName("§6§l16x §e§lDiamanten.");
+			DiamantMeta.setLore(diamant);
+			
+			List op = new ArrayList();
+			op.add("§e§oBenötigt §6§o1 §e§oVotepunkt.");			
+			ItemStack Op = new ItemStack(Material.GOLDEN_APPLE);
+			ItemMeta OpMeta = Op.getItemMeta();			
+			OpMeta.setDisplayName("§6§l3x §e§lOP-Äpfel");
+			OpMeta.setLore(op);
+			
+			List schwert = new ArrayList();
+			schwert.add("§e§oBenötigt §6§o6 §e§oVotepunkte.");			
+			ItemStack Schwert = new ItemStack(Material.DIAMOND_SWORD);
+			ItemMeta SchwertMeta = Schwert.getItemMeta();			
+			SchwertMeta.setDisplayName("§6§l1x §e§lSchärfe §6§lV§e§l, §e§lPlünderung §6§lIV §e§lDiamantschwert");
+		    SchwertMeta.setLore(schwert);
+		    
+			List spitzhacke = new ArrayList();
+			spitzhacke.add("§e§oBenötigt §6§o6 §e§oVotepunkte.");			
+			ItemStack Spitzhacke = new ItemStack(Material.DIAMOND_PICKAXE);
+			ItemMeta SpitzhackeMeta = Spitzhacke.getItemMeta();			
+		SpitzhackeMeta.setDisplayName("§6§l1x §e§lEffizienz §6§lVI§e§l, §e§lHaltbarkeit §6§lIII §e§lDiamantspitzhacke");
+			SpitzhackeMeta.setLore(spitzhacke);
+		    
+		    Configs.PlayerData pd = new Configs.PlayerData(p.getName());
+			List punkte = new ArrayList();
+			punkte.add("§eDeine Votepunkte: §6" + pd.getVotepunkte());			
+			ItemStack Punkte = new ItemStack(Material.BEACON);
+			ItemMeta PunkteMeta = Punkte.getItemMeta();			
+			PunkteMeta.setDisplayName("§6§lAktuelle Votepunkte");
+			PunkteMeta.setLore(punkte);
+		    
+		    List soon = new ArrayList();
+		    soon.add("");
+			ItemStack Soon = new ItemStack(Material.ANVIL);
+			ItemMeta SoonMeta = Soon.getItemMeta();			
+			SoonMeta.setDisplayName("§c§oComing soon...");
+			SoonMeta.setLore(soon);
+			
+			vote.setItem(0, Spawner);
+			vote.setItem(10, Diamant);
+			vote.setItem(20, Bedrock);
+			vote.setItem(15, Op);
+			vote.setItem(11, Schwert);
+			vote.setItem(22, Soon);
+			vote.setItem(13, Spitzhacke);
+			vote.setItem(26, Punkte);
+			
+			p.openInventory(vote);
+			p.playSound(p.getLocation(), Sound.LEVEL_UP, 50.0F, 50.0F);
+			
+		
+			
+		}
+	}
+	
+	@EventHandler
+	  public void onItemClick(InventoryClickEvent e)
+	  {
+	    try
+	    {
+	      if ((e.getInventory().getName().equalsIgnoreCase("§e§lTray§6§lVoteshop")))
+	      {
+	        e.setCancelled(true);
+	        Player p = (Player)e.getWhoClicked();
+	        Configs.PlayerData pd = new Configs.PlayerData(p.getName());
+	        if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6§l16x §e§lDiamanten"))
+	        {
+	        	if(pd.getVotepunkte() > 1) {
+	        		p.closeInventory();
+	        		pd.removeCoins(1);
+	        		p.getInventory().addItem(new ItemStack(Material.DIAMOND, 16));
+	        		p.updateInventory();
+	        		p.sendMessage(Main.Main.p + "§eDu hast dir erfolgreich §616 Diamanten §egekauft.");
+	        		p.playSound(p.getLocation(), Sound.NOTE_PLING, 5.0F, 5.0F);
+	        		
+	        	} else { p.sendMessage(Main.Main.p + "§cDafür brauchst du §61 §cVotecoin. §6/vote"); }
+	        }
+	        if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6§l1x §e§lMobspawner"))
+	        {
+	        	if(pd.getVotepunkte() > 5) {
+	        		p.closeInventory();
+	        		pd.removeCoins(5);
+	        		p.getInventory().addItem(new ItemStack(Material.MOB_SPAWNER, 1));
+	        		p.updateInventory();
+	        		p.sendMessage(Main.Main.p + "§eDu hast dir erfolgreich §61 Mobspawner §egekauft.");
+	        		p.playSound(p.getLocation(), Sound.NOTE_PLING, 5.0F, 5.0F);
+	        		
+	        	} else { p.sendMessage(Main.Main.p + "§cDafür brauchst du §65 §cVotecoins. §6/vote"); }
+	        	
+	        }
+	        
+	        if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6§l16x §e§lGrundgestein"))
+	        {
+	        	if(pd.getVotepunkte() > 2) {
+	        		p.closeInventory();
+	        		pd.removeCoins(2);
+	        		p.getInventory().addItem(new ItemStack(Material.BEDROCK ,16));
+	        		p.updateInventory();
+	        		p.sendMessage(Main.Main.p + "§eDu hast dir erfolgreich §616 Grundgestein §egekauft.");
+	        		p.playSound(p.getLocation(), Sound.NOTE_PLING, 5.0F, 5.0F);
+	        		
+        	} else { p.sendMessage(Main.Main.p + "§cDafür brauchst du §62 §cVotecoins. §6/vote"); }
+	        	
+	        }
+	        
+	        if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6§l3x §e§lOP-Äpfel"))
+	        {
+	        	if(pd.getVotepunkte() > 1) {
+	        		p.closeInventory();
+	        		pd.removeCoins(2);
+	        		p.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE ,3));
+	        		p.updateInventory();
+	        		p.sendMessage(Main.Main.p + "§eDu hast dir erfolgreich §63 OP-Äpfel §egekauft.");
+	        		p.playSound(p.getLocation(), Sound.NOTE_PLING, 5.0F, 5.0F);
+	        		
+	        	} else { p.sendMessage(Main.Main.p + "§cDafür brauchst du §61 §cVotecoin. §6/vote"); }
+	        	
+	        }
+	        
+	        if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6§l1x §e§lSchärfe §6§lV§e§l, §e§lPlünderung §6§lIV §e§lDiamantschwert"))
+	        {
+	        	if(pd.getVotepunkte() > 6) {
+	        		p.closeInventory();
+	        		pd.removeCoins(6);
+	        		ItemStack bow = new ItemStack(Material.DIAMOND_SWORD);
+	        		bow.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 5);
+	        		bow.addUnsafeEnchantment(Enchantment.LOOT_BONUS_MOBS, 4);
+	        		p.getInventory().addItem(bow);
+	        		p.updateInventory();
+	        		p.sendMessage(Main.Main.p + "§eDu hast dir erfolgreich §61 Diamantschwert §egekauft.");
+	        		p.playSound(p.getLocation(), Sound.NOTE_PLING, 5.0F, 5.0F);
+	        		
+	        	} else { p.sendMessage(Main.Main.p + "§cDafür brauchst du §66 §cVotecoins. §6/vote"); }
+	        	
+	        }
+	        
+	        
+	        if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6§l1x §e§lEffizienz §6§lVI§e§l, §e§lHaltbarkeit §6§lIII §e§lDiamantspitzhacke"))
+	        {
+	        	if(pd.getVotepunkte() > 6) {
+	        		p.closeInventory();
+	        		pd.removeCoins(6);
+	        		ItemStack spitzhacke = new ItemStack(Material.DIAMOND_PICKAXE);
+	        		spitzhacke.addUnsafeEnchantment(Enchantment.DIG_SPEED, 6);
+	        		spitzhacke.addUnsafeEnchantment(Enchantment.DURABILITY, 4);
+	        		p.getInventory().addItem(spitzhacke);
+	        		p.updateInventory();
+	        		p.sendMessage(Main.Main.p + "§eDu hast dir erfolgreich §61 Diamantspitzhacke §egekauft.");
+	        		p.playSound(p.getLocation(), Sound.NOTE_PLING, 5.0F, 5.0F);
+	        		
+	        	} else { p.sendMessage(Main.Main.p + "§cDafür brauchst du §66 §cVotecoins. §6/vote"); }
+	        	
+	        }
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	      }
+	    }
+	    catch (Exception localException)
+	    {
+	    }
+	  }
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
+		if(cmd.getName().equalsIgnoreCase("votepunkte")) {
+			if(args.length == 0) {
+				Configs.PlayerData pd = new Configs.PlayerData(sender.getName());
+				sender.sendMessage("§6§l╔§e§l═══ §6§lTrayPvP §e§l═══§6§l╗");
+				sender.sendMessage("§6§l > §eSpieler: §6" + sender.getName()); 
+				sender.sendMessage("§6§l > §eVotepunkte: §6" + pd.getVotepunkte());
+				sender.sendMessage("§6§l╚§e§l═══ §6§lTrayPvP §e§l═══§6§l╝");
+			}
+			
+			if(args.length == 1) {
+				Player t = Bukkit.getPlayer(args[0]);
+				Configs.PlayerData pd = new Configs.PlayerData(t.getName());
+				sender.sendMessage("§6§l╔§e§l═══ §6§lTrayPvP §e§l═══§6§l╗");
+				sender.sendMessage("§6§l > §eSpieler: §6" + t.getName());
+				sender.sendMessage("§6§l > §eVotepunkte: §6" + pd.getVotepunkte());
+				sender.sendMessage("§6§l╚§e§l═══ §6§lTrayPvP §e§l═══§6§l╝");
+				
+				
+			}
+		}
+		
+		return false;
+	}
+
+}
