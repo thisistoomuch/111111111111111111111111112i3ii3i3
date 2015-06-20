@@ -1,0 +1,54 @@
+package Commands3;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+
+public class PluginManager implements CommandExecutor {
+	
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
+		
+		if(cmd.getName().equalsIgnoreCase("pm")) {
+		   if(sender.hasPermission("tray.pm")) {
+			   if(args.length == 0) {
+				   sender.sendMessage("§6§l╔§e§l═══ §6§lTrayPvP §e§l═══§6§l╗");
+				   sender.sendMessage("§6§l > §6/pm reload Plugin");
+				   sender.sendMessage("§6§l > §6/pm enable Plugin");
+				   sender.sendMessage("§6§l > §6/pm disable Plugin");
+				   sender.sendMessage("§6§l╚§e§l═══ §6§lTrayPvP §e§l═══§6§l╝");
+			   }
+			   if(args.length == 2) {
+				   if(args[0].equalsIgnoreCase("reload")) {
+			           sender.sendMessage(Main.Main.p + "§eLade §6 " + args[1] + " §eneu..");
+			           Bukkit.getServer().getPluginManager().disablePlugin(Bukkit.getServer().getPluginManager().getPlugin(args[1]));
+			           Bukkit.getServer().getPluginManager().enablePlugin(Bukkit.getServer().getPluginManager().getPlugin(args[1]));
+			           sender.sendMessage(Main.Main.p + "§eDas Plugin wurde erfolgreich neugeladen.");
+					   
+				   }
+				   if(args[0].equalsIgnoreCase("disable")) {
+					   sender.sendMessage(Main.Main.p + "§eDeaktiviere§6 " + args[1] + "§e ..");
+			           Bukkit.getServer().getPluginManager().disablePlugin(Bukkit.getServer().getPluginManager().getPlugin(args[1]));
+			           sender.sendMessage(Main.Main.p + "§eDas Plugin wurde erfolgreich deaktiviert.");
+				   }
+				   if(args[0].equalsIgnoreCase("enable")) {
+					   sender.sendMessage(Main.Main.p + "§eAktiviere§6 " + args[1] + "§e ..");
+					   Bukkit.getServer().getPluginManager().enablePlugin(Bukkit.getServer().getPluginManager().getPlugin(args[1]));
+					   sender.sendMessage(Main.Main.p + "§eDas Plugin wurde erfolgreich aktiviert.");
+					   
+				   }
+				   
+				   
+			   }
+			   
+			   
+		   } else { sender.sendMessage(Main.Main.kr); }
+		}
+		
+		
+		return false;
+		
+	}
+
+}
