@@ -16,8 +16,8 @@ public class Rang implements CommandExecutor {
 			if(sender.hasPermission("tray.user")) {
 			if(args.length == 0) {
 				sender.sendMessage("§6§l╔§e§l═══ §6§lTrayPvP §e§l═══§6§l╗");
-				sender.sendMessage("§6&§╠ §6/user gruppe Spieler    §6§§╠");
-				sender.sendMessage("§6&§╠ §6/user Groups            §6§§╠");
+				sender.sendMessage("§6&l > §6/user gruppe Spieler");
+				sender.sendMessage("§6&l > §6/user Groups");
 				sender.sendMessage("§6§l╔§e§l═══ §6§lTrayPvP §e§l═══§6§l╗");
 			}
 			
